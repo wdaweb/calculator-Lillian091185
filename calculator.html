@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: '微軟正黑體', sans-serif;
+            background-image: linear-gradient(#86ccf8, #ec2f4b,#BA55D3);
+            background-attachment: fixed;
+            background-size: 400% 400%;
+            animation-name: bg;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+        @keyframes bg {
+            0%{
+                background-position: 0% 0%;
+            }
+            100%{
+                background-position: 0% 100%;
+            }
+        }
+
+        td:not(#input) {
+            cursor: pointer;
+        }
+
+        td {
+            padding: 20px;
+            width: 25%;
+            height: 16%;
+        }
+
+        table {
+            color: white;
+            width: 300px;
+            height: 400px;
+            font-size: 1.4em;
+            text-align: center;
+            border-collapse: collapse;
+            background: linear-gradient(180deg, rgba(3, 18, 70, 1)77%, rgba(30, 29, 57, 1)100%);
+            box-shadow: 5px 10px 10px #333333;
+        }
+
+        .sh {
+            border: none;
+            text-align: right;
+            font-size: 18px;
+        }
+
+        #input {
+            border: none;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .tr {
+            border-top: 1px black solid;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td colspan="4" id="input">0</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="sh" id="sh">0</td>
+
+        </tr>
+        <tr class="tr">
+            <td>AC</td>
+            <td>/</td>
+            <td>*</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>8</td>
+            <td>9</td>
+            <td rowspan="2">+</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td rowspan="2">=</td>
+        </tr>
+        <tr>
+            <td colspan="2">0</td>
+            <td>.</td>
+        </tr>
+    </table>
+    </div>
+    <script>
+        let sh = document.getElementById("sh");
+        let input = document.getElementById("input");
+        let td = document.getElementsByTagName("td");
+        let operator = ["+", "-", "*", "/", "Enter", "."];
+
+        for (let i = 0; i < td.length; i++) {
+            if (td[i].id != "sh") {
+                td[i].onclick = () => {
+                    addNumber(td[i].innerText);
+                }
+            }
+        }
+
+        document.onkeydown = (event) => {
+            let key = event.key;
+            if (!isNaN(key) || operator.includes(key)) {
+                addNumber(key);
+            }
+        }
+
+        let addNumber = (number) => {
+            if (number == "AC") {
+                sh.innerText = "0";
+                input.innerText = "0";
+            }
+            else if (number == "=" || number == "Enter") {
+                input.innerText = eval(sh.innerText);
+            } else if (sh.innerText.length < 20) {
+                if (sh.innerText == "0") {
+                    sh.innerText = number;
+                }
+                else {
+                    if (operator.includes(number)) {
+                        if (operator.includes(sh.innerText.substring(sh.innerText.length - 1))) {
+                            let str = sh.innerText.substring(0, sh.innerText.length - 1);
+                            sh.innerText = str + number;
+                        } else {
+                            sh.innerText += number;
+
+                        }
+
+                    } else {
+                        sh.innerText += number;
+                    }
+                }
+            }
+        }       
+    </script>
+</body>
+
+</html>
